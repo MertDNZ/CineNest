@@ -32,6 +32,7 @@ class TrendingMoviesSliderWidget extends StatelessWidget {
   }
 
   SizedBox _trendingMovieSlider(List<MovieEntity>? trendingMovies) {
+    bool _hasErrorDialogShown = false;
     return SizedBox(
       width: double.infinity,
       child: CarouselSlider.builder(
@@ -58,7 +59,25 @@ class TrendingMoviesSliderWidget extends StatelessWidget {
                 height: 300,
                 width: 200,
                 color: Theme.of(context).colorScheme.secondary,
-                child: Image.network(posterUrl + movie.posterPath),
+                child: Image.network(posterUrl + movie.posterPath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (!_hasErrorDialogShown) {
+                      _hasErrorDialogShown = true;
+                      showErrorDialog(context, 'Failed to load image');
+                    }
+                  });
+                  return Container(
+                    color: Colors.grey,
+                    child: const Center(
+                      child: Icon(
+                        Icons.error,
+                        color: Colors.black,
+                      ),
+                    ),
+                  );
+                }),
               ),
             ),
           );
