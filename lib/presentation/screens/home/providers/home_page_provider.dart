@@ -4,19 +4,25 @@ import 'package:cine_nest/core/errors/failure.dart';
 import 'package:cine_nest/data/repositories/movie_repository_impl.dart';
 import 'package:cine_nest/data/sources/movie_remote_data_source.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
-import 'package:cine_nest/domain/usecases/get_movies_by_endpoints.dart';
+import 'package:cine_nest/domain/usecases/get_top_rated_movies.dart';
+import 'package:cine_nest/domain/usecases/get_trend_movies.dart';
+import 'package:cine_nest/domain/usecases/get_popular_movies.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class TrendingMoviesProvider extends ChangeNotifier {
+class HomePageProvider extends ChangeNotifier {
   List<MovieEntity>? trendingMovies;
   List<MovieEntity>? popularMovies;
+  List<MovieEntity>? topRatedMovies;
   Failure? failure;
+  bool? isLoading;
 
-  TrendingMoviesProvider({
+  HomePageProvider({
+    this.isLoading,
+    this.failure,
     this.trendingMovies,
     this.popularMovies,
-    this.failure,
+    this.topRatedMovies,
   });
 
   MovieRepositoryImpl repository = MovieRepositoryImpl(
@@ -25,18 +31,17 @@ class TrendingMoviesProvider extends ChangeNotifier {
     remoteDataSource: MovieRemoteDataSourceImpl(),
   );
 
-  void eitherMovieOrFailureMain() async {
+  void fetchMovies() async {
+    isLoading = true;
     final trendingMoviesOrFailure =
         await GetTrendingMovies(repository: repository)
             .call(endpoint: trendingMoviesEndpoint);
     trendingMoviesOrFailure.fold((newFailure) {
       trendingMovies = null;
       failure = newFailure;
-      notifyListeners();
     }, (newMovies) {
       trendingMovies = newMovies;
       failure = null;
-      notifyListeners();
     });
 
     final popularMoviesOrFailure =
@@ -45,11 +50,23 @@ class TrendingMoviesProvider extends ChangeNotifier {
     popularMoviesOrFailure.fold((newFailure) {
       popularMovies = null;
       failure = newFailure;
-      notifyListeners();
     }, (newMovies) {
       popularMovies = newMovies;
       failure = null;
-      notifyListeners();
     });
+
+    final topRatedMoviesOrFailure =
+        await GetTopRatedMovies(repository: repository)
+            .call(endpoint: topRatedMoviesEndpoint);
+    topRatedMoviesOrFailure.fold((newFailure) {
+      topRatedMovies = null;
+      failure = newFailure;
+    }, (newMovies) {
+      topRatedMovies = newMovies;
+      failure = null;
+    });
+
+    isLoading = false;
+    notifyListeners();
   }
 }

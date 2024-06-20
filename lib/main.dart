@@ -1,33 +1,50 @@
-import 'package:cine_nest/presentation/page/skeleton.dart';
-import 'package:cine_nest/presentation/provider/trending_movie_provider.dart';
+import 'dart:convert';
+
+import 'package:cine_nest/config/routes/routes.dart';
+import 'package:cine_nest/presentation/screens/movie_detail/movie_detail_page.dart';
+import 'package:cine_nest/presentation/screens/skeleton.dart';
+import 'package:cine_nest/presentation/screens/home/providers/home_page_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final themeStr = await rootBundle.loadString("lib/config/theme/theme.json");
+  final themeJson = await jsonDecode(themeStr);
+  final toTheme = ThemeDecoder.decodeThemeData(themeJson)!;
+  final theme =
+      toTheme.copyWith(textTheme: GoogleFonts.latoTextTheme(toTheme.textTheme));
+  runApp(MyApp(
+    theme: theme,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.theme});
+  final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => TrendingMoviesProvider())
+        ChangeNotifierProvider(create: (context) => HomePageProvider())
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: theme,
         debugShowCheckedModeBanner: false,
-        home: _Init(),
-        //routes: {'/second': (context) => const TestPage()},
+        home: const _Init(),
+        routes: {detailScreen: (context) => const MovieDetailPage()},
       ),
     );
   }
 }
 
 class _Init extends StatefulWidget {
-  const _Init({super.key});
-
+  const _Init();
   @override
   State<_Init> createState() => _InitState();
 }
@@ -35,9 +52,7 @@ class _Init extends StatefulWidget {
 class _InitState extends State<_Init> {
   @override
   void initState() {
-    Provider.of<TrendingMoviesProvider>(context, listen: false)
-        .eitherMovieOrFailureMain();
-
+    Provider.of<HomePageProvider>(context, listen: false).fetchMovies();
     super.initState();
   }
 
