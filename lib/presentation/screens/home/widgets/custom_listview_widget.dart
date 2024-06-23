@@ -29,24 +29,22 @@ class CustomListViewWidget extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final movie = movieList![index];
           final posterPath = movie.posterPath;
+          final image = PosterNetworkImageWidget(
+            posterPath: posterPath,
+            onError: _showErrorDialog,
+          );
           return Padding(
             padding: const EdgeInsets.all(10),
-            child: Hero(
-              tag: "movie-detail-page",
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    detailScreen,
-                  );
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: PosterNetworkImageWidget(
-                    posterPath: posterPath,
-                    onError: _showErrorDialog,
-                  ),
-                ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, detailScreen, arguments: {
+                  'movie': movie,
+                  'image': image,
+                });
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: image,
               ),
             ),
           );

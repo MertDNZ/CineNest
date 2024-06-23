@@ -16,7 +16,7 @@ class CustomHeadline extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 15),
           child: Text(
             headline,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.rokkitt(
                 textStyle: Theme.of(context).textTheme.headlineMedium,
                 fontSize: fontSize),
           ),

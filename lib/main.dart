@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cine_nest/config/routes/routes.dart';
+import 'package:cine_nest/presentation/screens/discover/providers/discover_page_provider.dart';
 import 'package:cine_nest/presentation/screens/movie_detail/movie_detail_page.dart';
 import 'package:cine_nest/presentation/screens/skeleton.dart';
 import 'package:cine_nest/presentation/screens/home/providers/home_page_provider.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HomePageProvider())
+        ChangeNotifierProvider(create: (context) => HomePageProvider()),
+        ChangeNotifierProvider(create: (context) => DiscoverPageProvider())
       ],
       child: MaterialApp(
         theme: theme,
@@ -53,6 +55,7 @@ class _InitState extends State<_Init> {
   @override
   void initState() {
     Provider.of<HomePageProvider>(context, listen: false).fetchMovies();
+    Provider.of<DiscoverPageProvider>(context, listen: false).fetchGenres();
     super.initState();
   }
 

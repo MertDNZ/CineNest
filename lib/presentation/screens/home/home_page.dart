@@ -17,6 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<void> _onRefresh() {
+    Provider.of<HomePageProvider>(context, listen: false).fetchMovies();
+    setState(() {});
+    return Future.delayed(const Duration(seconds: 0));
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomePageProvider>(context);
@@ -26,24 +32,17 @@ class _HomePageState extends State<HomePage> {
     final popularMovies = provider.popularMovies;
     final topRatedMovies = provider.topRatedMovies;
 
-    // ignore: no_leading_underscores_for_local_identifiers
-    Widget _widget;
-
     if (isLoading!) {
-      _widget = const Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
-      return _widget;
     } else if (failure != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showErrorDialog(context, failure.errorMessage);
       });
-      _widget = _onFailure(failure);
-      return _widget;
+      return _onFailure(failure);
     } else {
-      _widget =
-          _onSuccess(context, trendingMovies, popularMovies, topRatedMovies);
-      return _widget;
+      return _onSuccess(context, trendingMovies, popularMovies, topRatedMovies);
     }
   }
 
@@ -75,17 +74,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             //Trending Movies
-            const CustomHeadline(headline: trendingMoviesText, fontSize: 30),
+            const CustomHeadline(headline: trendingMoviesText, fontSize: 40),
             TrendingMoviesSliderWidget(trendingMovies: trendingMovies),
             const Divider(height: 10, color: Colors.transparent),
 
             //Popular Movies
-            const CustomHeadline(headline: popularMoviesText, fontSize: 25),
+            const CustomHeadline(headline: popularMoviesText, fontSize: 30),
             CustomListViewWidget(movieList: popularMovies),
             const Divider(height: 10, color: Colors.transparent),
 
             //Top Rated Movies
-            const CustomHeadline(headline: topRatedMoviesText, fontSize: 25),
+            const CustomHeadline(headline: topRatedMoviesText, fontSize: 30),
             CustomListViewWidget(
               movieList: topRatedMovies,
             ),
@@ -93,11 +92,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _onRefresh() {
-    Provider.of<HomePageProvider>(context, listen: false).fetchMovies();
-    setState(() {});
-    return Future.delayed(const Duration(seconds: 0));
   }
 }

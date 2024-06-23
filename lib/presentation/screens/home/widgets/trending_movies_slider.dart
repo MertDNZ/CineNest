@@ -25,7 +25,7 @@ class TrendingMoviesSliderWidget extends StatelessWidget {
       width: double.infinity,
       child: CarouselSlider.builder(
         options: CarouselOptions(
-            height: 300,
+            height: 350,
             autoPlay: true,
             viewportFraction: 0.55,
             enlargeCenterPage: true,
@@ -35,22 +35,20 @@ class TrendingMoviesSliderWidget extends StatelessWidget {
         itemBuilder: (context, index, realIndex) {
           final movie = trendingMovies![index];
           final posterPath = movie.posterPath;
-          return Hero(
-            tag: "movie-detail-page",
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  detailScreen,
-                );
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: PosterNetworkImageWidget(
-                  posterPath: posterPath,
-                  onError: _showErrorDialog,
-                ),
-              ),
+          Widget image = PosterNetworkImageWidget(
+            posterPath: posterPath,
+            onError: _showErrorDialog,
+          );
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, detailScreen, arguments: {
+                'movie': movie,
+                'image': image,
+              });
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: image,
             ),
           );
         },

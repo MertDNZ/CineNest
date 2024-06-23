@@ -13,7 +13,7 @@ extension PageProperties on MainPages {
       case MainPages.home:
         return const HomePage();
       case MainPages.search:
-        return const DiscoverPage();
+        return DiscoverPage();
     }
   }
 
