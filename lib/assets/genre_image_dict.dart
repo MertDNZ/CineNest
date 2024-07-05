@@ -77,4 +77,4 @@ final List<Map<String, String>> genreList = [
   },
 ];
 
-const String defaultImagePath = "lib/assets/images/drama_old.jpeg";
+const String defaultImagePath = "lib/assets/images/default.jpeg";

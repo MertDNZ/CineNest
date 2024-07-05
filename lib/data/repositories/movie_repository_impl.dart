@@ -2,6 +2,7 @@ import 'package:cine_nest/core/connection/connection_info.dart';
 import 'package:cine_nest/core/errors/exceptions.dart';
 import 'package:cine_nest/core/errors/failure.dart';
 import 'package:cine_nest/data/sources/movie_remote_data_source.dart';
+import 'package:cine_nest/domain/entities/discovery_entity.dart';
 import 'package:cine_nest/domain/entities/genre_entity.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/domain/repositories/movie_repository.dart';
@@ -37,6 +38,22 @@ class MovieRepositoryImpl implements MovieRepository {
       try {
         final genres = await remoteDataSource.getGenres();
         return Right(genres);
+      } on ServerException {
+        return Left(ServerFailure(errorMessage: "Server Exception"));
+      }
+    } else {
+      return Left(NetworkFailure(errorMessage: 'No internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DiscoveryEntity>> getDiscoveryResults(
+      int genreId, int? page) async {
+    if (await connectionInfo.isConnected!) {
+      try {
+        final discoveryResults = await remoteDataSource.getDiscoveryResults(
+            genreId: genreId, page: page);
+        return Right(discoveryResults);
       } on ServerException {
         return Left(ServerFailure(errorMessage: "Server Exception"));
       }

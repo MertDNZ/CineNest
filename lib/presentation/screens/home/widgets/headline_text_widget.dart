@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomHeadline extends StatelessWidget {
   const CustomHeadline(
@@ -16,9 +15,7 @@ class CustomHeadline extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 15),
           child: Text(
             headline,
-            style: GoogleFonts.rokkitt(
-                textStyle: Theme.of(context).textTheme.headlineMedium,
-                fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize),
           ),
         )
       ],

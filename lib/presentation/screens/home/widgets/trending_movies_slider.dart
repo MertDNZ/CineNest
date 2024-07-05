@@ -41,7 +41,7 @@ class TrendingMoviesSliderWidget extends StatelessWidget {
           );
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, detailScreen, arguments: {
+              Navigator.pushNamed(context, detailPage, arguments: {
                 'movie': movie,
                 'image': image,
               });

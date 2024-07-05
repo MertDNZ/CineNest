@@ -37,7 +37,7 @@ class CustomListViewWidget extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, detailScreen, arguments: {
+                Navigator.pushNamed(context, detailPage, arguments: {
                   'movie': movie,
                   'image': image,
                 });

@@ -1,11 +1,15 @@
 import 'dart:developer';
 import 'package:cine_nest/assets/genre_image_dict.dart';
+import 'package:cine_nest/config/routes/routes.dart';
+import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/genre_entity.dart';
+import 'package:cine_nest/presentation/common/loading_widget.dart';
+import 'package:cine_nest/presentation/common/on_failure_widget.dart';
+import 'package:cine_nest/presentation/dialogs/error_dialog.dart';
 import 'package:cine_nest/presentation/screens/discover/providers/discover_page_provider.dart';
 import 'package:cine_nest/presentation/screens/discover/widgets/genre_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -15,6 +19,12 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
+  Future<void> _onRefresh() {
+    Provider.of<DiscoverPageProvider>(context, listen: false).fetchGenres();
+    setState(() {});
+    return Future.delayed(const Duration(seconds: 0));
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DiscoverPageProvider>(context, listen: false);
@@ -23,11 +33,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
     final failure = provider.failure;
 
     if (isLoading!) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const OnLoading();
     } else if (failure != null) {
-      return Center(child: Text(failure.errorMessage));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showErrorDialog(context, failure.errorMessage);
+      });
+      return OnFailure(failure: failure, onRefresh: _onRefresh);
     } else {
       return _onSuccess(genres);
     }
@@ -46,7 +57,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
   Scaffold _onSuccess(List<GenreEntity>? genres) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discover'),
+        title: const Text(
+          discoverScreenText,
+        ),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10.0),
@@ -58,9 +71,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
         itemCount: genres!.length,
         itemBuilder: (context, index) {
           final genre = genres[index];
-          return GestureDetector(
+          return InkWell(
+            hoverColor: Colors.white,
             onTap: () {
+              Navigator.pushNamed(context, filteredPage, arguments: genre);
               log('on tapped');
+              log(genre.id.toString());
             },
             child: GenreCard(genre: genre),
           );

@@ -1,5 +1,5 @@
-import 'package:cine_nest/presentation/screens/discover/discover_page.dart';
-import 'package:cine_nest/presentation/screens/home/home_page.dart';
+import 'package:cine_nest/presentation/screens/discover/page/discover_page.dart';
+import 'package:cine_nest/presentation/screens/home/page/home_page.dart';
 import 'package:flutter/material.dart';
 
 enum MainPages {
@@ -13,7 +13,7 @@ extension PageProperties on MainPages {
       case MainPages.home:
         return const HomePage();
       case MainPages.search:
-        return DiscoverPage();
+        return const DiscoverPage();
     }
   }
 

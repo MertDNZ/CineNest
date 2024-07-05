@@ -1,2 +1,3 @@
 //Detail Screen
-const String detailScreen = "/detail";
+const String detailPage = "/detail";
+const String filteredPage = "/result";

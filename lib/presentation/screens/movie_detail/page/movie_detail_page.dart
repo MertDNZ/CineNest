@@ -1,3 +1,4 @@
+import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/presentation/screens/movie_detail/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
@@ -38,12 +39,12 @@ class MovieDetailPage extends StatelessWidget {
                   fontSize: 30,
                 ),
                 const Divider(),
-                CustomTextWidget(text: "Release Date: $date"),
+                CustomTextWidget(text: releaseDateText + date),
                 CustomTextWidget(
                     text:
-                        "Popularity: ${movie.voteAverage.toStringAsFixed(1)}"),
+                        popularityText + movie.voteAverage.toStringAsFixed(1)),
                 CustomTextWidget(
-                    text: "Total Vote: ${movie.voteCount.toString()}"),
+                    text: totalVoteText + movie.voteCount.toString()),
               ],
             ),
           ),

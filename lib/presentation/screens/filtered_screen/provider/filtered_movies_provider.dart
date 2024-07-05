@@ -2,18 +2,18 @@ import 'package:cine_nest/core/connection/connection_info.dart';
 import 'package:cine_nest/core/errors/failure.dart';
 import 'package:cine_nest/data/repositories/movie_repository_impl.dart';
 import 'package:cine_nest/data/sources/movie_remote_data_source.dart';
-import 'package:cine_nest/domain/entities/genre_entity.dart';
-import 'package:cine_nest/domain/usecases/get_genres.dart';
+import 'package:cine_nest/domain/entities/discovery_entity.dart';
+import 'package:cine_nest/domain/usecases/get_filtered_results.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class DiscoverPageProvider extends ChangeNotifier {
-  List<GenreEntity>? genres;
+class FilteredMoviesProvider extends ChangeNotifier {
+  DiscoveryEntity? results;
   Failure? failure;
   bool? isLoading;
 
-  DiscoverPageProvider({
-    this.genres,
+  FilteredMoviesProvider({
+    this.results,
     this.failure,
     this.isLoading,
   });
@@ -24,16 +24,19 @@ class DiscoverPageProvider extends ChangeNotifier {
     remoteDataSource: MovieRemoteDataSourceImpl(),
   );
 
-  void fetchGenres() async {
+  void fetchFilteredMovies({required int genreId}) async {
     isLoading = true;
-    final genresOrFailure = await GetMovieGenres(repository: repository).call();
-    genresOrFailure.fold((newFailure) {
-      genres = null;
+    final filteredMoviesOrFailure =
+        await GetDiscoveryResults.getDiscoveryResults(repository: repository)
+            .call(genreId: genreId);
+
+    filteredMoviesOrFailure.fold((newFailure) {
+      results = null;
       failure = newFailure;
       isLoading = false;
       notifyListeners();
-    }, (fetchedGenres) {
-      genres = fetchedGenres;
+    }, (newResults) {
+      results = newResults;
       failure = null;
       isLoading = false;
       notifyListeners();

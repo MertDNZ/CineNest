@@ -1,8 +1,9 @@
 import 'dart:convert';
-
 import 'package:cine_nest/config/routes/routes.dart';
 import 'package:cine_nest/presentation/screens/discover/providers/discover_page_provider.dart';
-import 'package:cine_nest/presentation/screens/movie_detail/movie_detail_page.dart';
+import 'package:cine_nest/presentation/screens/movie_detail/page/movie_detail_page.dart';
+import 'package:cine_nest/presentation/screens/filtered_screen/page/filtered_movies_page.dart';
+import 'package:cine_nest/presentation/screens/filtered_screen/provider/filtered_movies_provider.dart';
 import 'package:cine_nest/presentation/screens/skeleton.dart';
 import 'package:cine_nest/presentation/screens/home/providers/home_page_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final themeStr = await rootBundle.loadString("lib/config/theme/theme.json");
-  final themeJson = await jsonDecode(themeStr);
+  final themeJson = jsonDecode(themeStr);
   final toTheme = ThemeDecoder.decodeThemeData(themeJson)!;
-  final theme =
-      toTheme.copyWith(textTheme: GoogleFonts.latoTextTheme(toTheme.textTheme));
+  final theme = toTheme.copyWith(
+      textTheme: GoogleFonts.rokkittTextTheme(toTheme.textTheme));
   runApp(MyApp(
     theme: theme,
   ));
@@ -33,13 +34,17 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => HomePageProvider()),
-        ChangeNotifierProvider(create: (context) => DiscoverPageProvider())
+        ChangeNotifierProvider(create: (context) => DiscoverPageProvider()),
+        ChangeNotifierProvider(create: (context) => FilteredMoviesProvider())
       ],
       child: MaterialApp(
         theme: theme,
         debugShowCheckedModeBanner: false,
         home: const _Init(),
-        routes: {detailScreen: (context) => const MovieDetailPage()},
+        routes: {
+          detailPage: (context) => const MovieDetailPage(),
+          filteredPage: (context) => const FilteredMoviesPage()
+        },
       ),
     );
   }
