@@ -11,7 +11,7 @@ class DiscoveryModel extends DiscoveryEntity {
 
   factory DiscoveryModel.fromJson(Map<String, dynamic> json) {
     return DiscoveryModel(
-      page: json['page'],
+      page: json['page'] as int,
       movie: (json['results'] as List<dynamic>)
           .map((movieJson) => MovieModel.fromJson(movieJson))
           .toList(),

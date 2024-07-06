@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:cine_nest/assets/genre_image_dict.dart';
-import 'package:cine_nest/config/routes/routes.dart';
+import 'package:cine_nest/config/routes/route_constants.dart';
 import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/genre_entity.dart';
 import 'package:cine_nest/presentation/common/loading_widget.dart';
@@ -74,7 +74,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
           return InkWell(
             hoverColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, filteredPage, arguments: genre);
+              Navigator.pushNamed(context, filteredPage,
+                  arguments: {'genre': genre});
               log('on tapped');
               log(genre.id.toString());
             },

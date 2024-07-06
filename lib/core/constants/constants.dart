@@ -11,7 +11,7 @@ const String genresEndpoint = "/3/genre/movie/list";
 const String discoverEndpoint = "/3/discover/movie";
 
 //default parameters
-const Map<String, String> queryParameters = {
+const Map<String, dynamic> queryParameters = {
   'api_key': apiKey,
   'adult': 'false',
   'sort_by': 'popularity.desc',

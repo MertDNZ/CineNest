@@ -65,7 +65,6 @@ class HomePageProvider extends ChangeNotifier {
       topRatedMovies = newMovies;
       failure = null;
     });
-
     isLoading = false;
     notifyListeners();
   }

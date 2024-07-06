@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'package:cine_nest/config/routes/routes.dart';
+import 'package:cine_nest/config/routes/route_constants.dart';
+import 'package:cine_nest/config/routes/route_generator.dart';
 import 'package:cine_nest/presentation/screens/discover/providers/discover_page_provider.dart';
-import 'package:cine_nest/presentation/screens/movie_detail/page/movie_detail_page.dart';
-import 'package:cine_nest/presentation/screens/filtered_screen/page/filtered_movies_page.dart';
 import 'package:cine_nest/presentation/screens/filtered_screen/provider/filtered_movies_provider.dart';
 import 'package:cine_nest/presentation/screens/skeleton.dart';
 import 'package:cine_nest/presentation/screens/home/providers/home_page_provider.dart';
@@ -40,23 +39,20 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: theme,
         debugShowCheckedModeBanner: false,
-        home: const _Init(),
-        routes: {
-          detailPage: (context) => const MovieDetailPage(),
-          filteredPage: (context) => const FilteredMoviesPage()
-        },
+        initialRoute: defaultPage,
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }
 }
 
-class _Init extends StatefulWidget {
-  const _Init();
+class Init extends StatefulWidget {
+  const Init({super.key});
   @override
-  State<_Init> createState() => _InitState();
+  State<Init> createState() => InitState();
 }
 
-class _InitState extends State<_Init> {
+class InitState extends State<Init> {
   @override
   void initState() {
     Provider.of<HomePageProvider>(context, listen: false).fetchMovies();

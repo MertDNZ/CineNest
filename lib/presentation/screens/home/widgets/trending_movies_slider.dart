@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cine_nest/config/routes/routes.dart';
+import 'package:cine_nest/config/routes/route_constants.dart';
 import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/presentation/dialogs/error_dialog.dart';

@@ -59,11 +59,11 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   @override
   Future<DiscoveryModel> getDiscoveryResults({
     required int genreId,
-    int? page,
+    int? page = 1,
   }) async {
     final Map<String, dynamic> parameters = {
       'with_genres': genreId.toString(),
-      'page': page,
+      'page': page.toString(),
     };
     parameters.addAll(queryParameters);
 

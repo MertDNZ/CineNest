@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cine_nest/core/connection/connection_info.dart';
 import 'package:cine_nest/core/errors/exceptions.dart';
 import 'package:cine_nest/core/errors/failure.dart';
@@ -26,6 +28,8 @@ class MovieRepositoryImpl implements MovieRepository {
         return Right(movies);
       } on ServerException {
         return Left(ServerFailure(errorMessage: 'Server Exception'));
+      } catch (_) {
+        return Left(ServerFailure(errorMessage: 'Something Went Wrong'));
       }
     } else {
       return Left(NetworkFailure(errorMessage: 'No internet connection'));
@@ -40,6 +44,8 @@ class MovieRepositoryImpl implements MovieRepository {
         return Right(genres);
       } on ServerException {
         return Left(ServerFailure(errorMessage: "Server Exception"));
+      } catch (_) {
+        return Left(ServerFailure(errorMessage: 'Something Went Wrong'));
       }
     } else {
       return Left(NetworkFailure(errorMessage: 'No internet connection'));
@@ -56,6 +62,9 @@ class MovieRepositoryImpl implements MovieRepository {
         return Right(discoveryResults);
       } on ServerException {
         return Left(ServerFailure(errorMessage: "Server Exception"));
+      } catch (_) {
+        log(_.toString());
+        return Left(ServerFailure(errorMessage: 'Something Went Wrong'));
       }
     } else {
       return Left(NetworkFailure(errorMessage: 'No internet connection'));

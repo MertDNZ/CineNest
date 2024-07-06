@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MovieDetailPage extends StatelessWidget {
-  const MovieDetailPage({super.key});
-
+  const MovieDetailPage({super.key, required this.movie, required this.image});
+  final MovieEntity movie;
+  final Widget image;
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final movie = args["movie"] as MovieEntity;
-    final image = args["image"] as Widget;
     final parseDate = DateFormat('yyyy-MM-dd').parse(movie.releaseDate);
     final date = DateFormat('MM/yyyy').format(parseDate).toString();
 
@@ -20,8 +17,8 @@ class MovieDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Movie Details"),
       ),
-      body: Column(children: [
-        Row(children: [
+      body: SingleChildScrollView(
+        child: Column(children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: SizedBox(
@@ -31,31 +28,28 @@ class MovieDetailPage extends StatelessWidget {
                   child: image),
             ),
           ),
-          Expanded(
-            child: Column(
-              children: [
-                CustomTextWidget(
-                  text: movie.title,
-                  fontSize: 30,
-                ),
-                const Divider(),
-                CustomTextWidget(text: releaseDateText + date),
-                CustomTextWidget(
-                    text:
-                        popularityText + movie.voteAverage.toStringAsFixed(1)),
-                CustomTextWidget(
-                    text: totalVoteText + movie.voteCount.toString()),
-              ],
-            ),
+          Column(
+            children: [
+              CustomTextWidget(
+                text: movie.title,
+                fontSize: 30,
+              ),
+              const Divider(),
+              CustomTextWidget(text: releaseDateText + date),
+              CustomTextWidget(
+                  text: popularityText + movie.voteAverage.toStringAsFixed(1)),
+              CustomTextWidget(
+                  text: totalVoteText + movie.voteCount.toString()),
+              const Divider(),
+              CustomTextWidget(
+                text: movie.overview,
+                fontSize: 20,
+                padding: 8,
+              )
+            ],
           ),
         ]),
-        const Divider(),
-        CustomTextWidget(
-          text: movie.overview,
-          fontSize: 20,
-          padding: 8,
-        )
-      ]),
+      ),
     );
   }
 }

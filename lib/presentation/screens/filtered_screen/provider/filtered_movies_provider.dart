@@ -24,11 +24,12 @@ class FilteredMoviesProvider extends ChangeNotifier {
     remoteDataSource: MovieRemoteDataSourceImpl(),
   );
 
-  void fetchFilteredMovies({required int genreId}) async {
+  void fetchFilteredMovies({required int genreId, int? page}) async {
+    final pageNum = page ?? 1;
     isLoading = true;
     final filteredMoviesOrFailure =
         await GetDiscoveryResults.getDiscoveryResults(repository: repository)
-            .call(genreId: genreId);
+            .call(genreId: genreId, page: pageNum);
 
     filteredMoviesOrFailure.fold((newFailure) {
       results = null;
