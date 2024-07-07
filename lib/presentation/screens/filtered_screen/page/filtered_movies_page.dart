@@ -21,26 +21,27 @@ class FilteredMoviesPage extends StatefulWidget {
 class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
   late final FilteredMoviesProvider provider;
   late final GenreEntity genre;
-  int page = 1;
   final ScrollController scrollController = ScrollController();
+  bool isLoadMoreData = false;
+  int page = 1;
   @override
   void initState() {
     super.initState();
     genre = widget.genre;
     provider = Provider.of<FilteredMoviesProvider>(context, listen: false);
     provider.fetchFilteredMovies(genreId: genre.id, page: page);
+    _loadMoreData();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadMoreData();
+  bool isLastPage() {
+    return page < provider.totalPages!;
   }
 
   void _loadMoreData() {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
+              scrollController.offset &&
+          isLastPage()) {
         page++;
         provider.fetchFilteredMovies(genreId: genre.id, page: page);
       }
@@ -82,21 +83,16 @@ class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text(
-            genre.genre,
-          ),
+          title: Text(genre.genre),
         ),
         body: ListView.builder(
           controller: scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           shrinkWrap: false,
-          itemCount: movies!.length + 1,
+          itemCount: movies.length + (isLastPage() ? 1 : 0),
           itemBuilder: (BuildContext context, int index) {
             if (index == movies.length) {
-              return const SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: Center(child: CircularProgressIndicator()));
+              return const Center(child: CircularProgressIndicator());
             } else {
               final movie = movies[index];
               final image = PosterNetworkImageWidget(
