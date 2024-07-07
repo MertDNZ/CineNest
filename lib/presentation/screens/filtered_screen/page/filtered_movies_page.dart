@@ -1,7 +1,7 @@
 import 'package:cine_nest/config/routes/route_constants.dart';
 import 'package:cine_nest/core/constants/constants.dart';
-import 'package:cine_nest/domain/entities/discovery_entity.dart';
 import 'package:cine_nest/domain/entities/genre_entity.dart';
+import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/presentation/common/loading_widget.dart';
 import 'package:cine_nest/presentation/common/on_failure_widget.dart';
 import 'package:cine_nest/presentation/dialogs/error_dialog.dart';
@@ -21,13 +21,30 @@ class FilteredMoviesPage extends StatefulWidget {
 class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
   late final FilteredMoviesProvider provider;
   late final GenreEntity genre;
-
+  int page = 1;
+  final ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     genre = widget.genre;
     provider = Provider.of<FilteredMoviesProvider>(context, listen: false);
-    provider.fetchFilteredMovies(genreId: genre.id);
+    provider.fetchFilteredMovies(genreId: genre.id, page: page);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadMoreData();
+  }
+
+  void _loadMoreData() {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        page++;
+        provider.fetchFilteredMovies(genreId: genre.id, page: page);
+      }
+    });
   }
 
   @override
@@ -43,13 +60,15 @@ class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
                 provider.fetchFilteredMovies(genreId: genre.id);
               });
         } else {
-          return _onSuccess(provider.results);
+          List<MovieEntity?>? movies = provider.movies;
+          return _onSuccess(movies, scrollController);
         }
       },
     );
   }
 
-  Widget _onSuccess(DiscoveryEntity? results) {
+  Widget _onSuccess(
+      List<MovieEntity?>? movies, ScrollController scrollController) {
     bool _hasErrorDialogShown = false;
     void _showErrorDialog() {
       if (!_hasErrorDialogShown) {
@@ -58,10 +77,9 @@ class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
       }
     }
 
-    if (results == null || results.movie! == [] || results.movie!.isEmpty) {
+    if (movies == [] || movies!.isEmpty) {
       return const Center(child: Text('No movies found.'));
     } else {
-      final movies = results.movie;
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -69,33 +87,43 @@ class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
           ),
         ),
         body: ListView.builder(
-          itemCount: movies!.length,
+          controller: scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          shrinkWrap: false,
+          itemCount: movies!.length + 1,
           itemBuilder: (BuildContext context, int index) {
-            final movie = movies[index];
-            final image = PosterNetworkImageWidget(
-              posterPath: movie!.posterPath,
-              onError: _showErrorDialog,
-            );
-            return Column(
-              children: [
-                Card(
-                  child: InkWell(
-                      hoverColor: Colors.white,
-                      child: CustomMovieCard(
-                        context: context,
-                        movie: movie,
-                        image: image,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, detailPage, arguments: {
-                          'movie': movie,
-                          'image': image,
-                        });
-                      }),
-                ),
-                const Divider(),
-              ],
-            );
+            if (index == movies.length) {
+              return const SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Center(child: CircularProgressIndicator()));
+            } else {
+              final movie = movies[index];
+              final image = PosterNetworkImageWidget(
+                posterPath: movie!.posterPath,
+                onError: _showErrorDialog,
+              );
+              return Column(
+                children: [
+                  Card(
+                    child: InkWell(
+                        hoverColor: Colors.white,
+                        child: CustomMovieCard(
+                          context: context,
+                          movie: movie,
+                          image: image,
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, detailPage, arguments: {
+                            'movie': movie,
+                            'image': image,
+                          });
+                        }),
+                  ),
+                  const Divider(),
+                ],
+              );
+            }
           },
         ),
       );
