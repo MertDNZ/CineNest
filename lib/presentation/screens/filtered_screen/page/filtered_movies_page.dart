@@ -58,7 +58,7 @@ class _FilteredMoviesPageState extends State<FilteredMoviesPage> {
           return OnFailure(
               failure: provider.failure!,
               onRefresh: () async {
-                provider.fetchFilteredMovies(genreId: genre.id);
+                provider.fetchFilteredMovies(genreId: genre.id, page: 1);
               });
         } else {
           List<MovieEntity?>? movies = provider.movies;

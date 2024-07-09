@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:cine_nest/assets/genre_image_dict.dart';
 import 'package:cine_nest/config/routes/route_constants.dart';
 import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/genre_entity.dart';
@@ -7,6 +6,7 @@ import 'package:cine_nest/presentation/common/loading_widget.dart';
 import 'package:cine_nest/presentation/common/on_failure_widget.dart';
 import 'package:cine_nest/presentation/dialogs/error_dialog.dart';
 import 'package:cine_nest/presentation/screens/discover/providers/discover_page_provider.dart';
+import 'package:cine_nest/presentation/screens/discover/widgets/custom_search_delegate.dart';
 import 'package:cine_nest/presentation/screens/discover/widgets/genre_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +27,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DiscoverPageProvider>(context, listen: false);
+    final provider = Provider.of<DiscoverPageProvider>(context);
     final genres = provider.genres;
     final isLoading = provider.isLoading;
     final failure = provider.failure;
@@ -38,28 +38,37 @@ class _DiscoverPageState extends State<DiscoverPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showErrorDialog(context, failure.errorMessage);
       });
-      return OnFailure(failure: failure, onRefresh: _onRefresh);
+      return OnFailure(
+        failure: failure,
+        onRefresh: _onRefresh,
+      );
     } else {
-      return _onSuccess(genres);
+      return _onSuccess(genres, provider);
     }
   }
 
-  String _imagePath({required GenreEntity genre}) {
-    final String genreString = genre.genre;
-    for (var map in genreList) {
-      if (map["title"] == genreString) {
-        return map["image"] ?? defaultImagePath;
-      }
-    }
-    return defaultImagePath;
-  }
-
-  Scaffold _onSuccess(List<GenreEntity>? genres) {
+  Scaffold _onSuccess(
+      List<GenreEntity>? genres, DiscoverPageProvider provider) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          discoverScreenText,
+          discoverText,
+          style: TextStyle(fontSize: 25),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+              size: 35,
+            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(provider: provider),
+              );
+            },
+          ),
+        ],
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10.0),

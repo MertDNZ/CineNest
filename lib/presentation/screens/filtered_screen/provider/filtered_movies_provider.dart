@@ -39,7 +39,7 @@ class FilteredMoviesProvider extends ChangeNotifier {
       loadMoreData = true;
     }
     final filteredMoviesOrFailure =
-        await GetDiscoveryResults.getDiscoveryResults(repository: repository)
+        await GetDiscoveryResults(repository: repository)
             .call(genreId: genreId, page: page);
 
     filteredMoviesOrFailure.fold((newFailure) {

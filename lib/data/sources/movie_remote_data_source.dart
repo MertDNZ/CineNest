@@ -15,6 +15,7 @@ abstract class MovieRemoteDataSource {
     required int genreId,
     int? page,
   });
+  Future<List<MovieModel>> getSearchedMovies({required String query});
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -42,7 +43,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   Future<List<GenreModel>> getGenres() async {
     final url = Uri.http(baseUrl, genresEndpoint, queryParameters);
     final response = await http.get(url);
-    log(response.statusCode.toString());
+    // log(response.statusCode.toString());
 
     // Checking status code and returning either data or exception
     if (response.statusCode == 200) {
@@ -74,6 +75,28 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       final data = json.decode(response.body);
 
       return DiscoveryModel.fromJson(data);
+    } else {
+      // log(response.body);
+      log('Request failed with status: ${response.statusCode}.');
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<MovieModel>> getSearchedMovies({required String query}) async {
+    final Map<String, dynamic> parameters = {'query': query};
+    parameters.addAll(queryParameters);
+    //Request for list of trending movies
+    final url = Uri.http(baseUrl, searchEndpoint, parameters);
+    final response = await http.get(url);
+    log(response.statusCode.toString());
+
+    // Checking status code and returning either data or exception
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)["results"] as List;
+      //log(data.toString());
+
+      return data.map((e) => MovieModel.fromJson(e)).toList();
     } else {
       log('Request failed with status: ${response.statusCode}.');
       throw ServerException();

@@ -9,6 +9,7 @@ const String popularMoviesEndpoint = "/3/movie/popular";
 const String topRatedMoviesEndpoint = "/3/movie/top_rated";
 const String genresEndpoint = "/3/genre/movie/list";
 const String discoverEndpoint = "/3/discover/movie";
+const String searchEndpoint = "/3/search/movie";
 
 //default parameters
 const Map<String, dynamic> queryParameters = {
@@ -27,7 +28,7 @@ const String releaseDateText = "Release Date: ";
 const String voteAverageText = "Average Vote: ";
 
 //Appbar texts
-const String discoverScreenText = "Discover";
+const String discoverText = "Discover Movies";
 
 //Dialog texts
 const String imageFailedDialogString = "Failed to load image";

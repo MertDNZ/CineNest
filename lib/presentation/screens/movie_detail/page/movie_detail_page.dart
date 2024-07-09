@@ -24,8 +24,9 @@ class MovieDetailPage extends StatelessWidget {
             child: SizedBox(
               height: 300,
               child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  child: image),
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                child: image,
+              ),
             ),
           ),
           Column(
@@ -35,11 +36,15 @@ class MovieDetailPage extends StatelessWidget {
                 fontSize: 30,
               ),
               const Divider(),
-              CustomTextWidget(text: releaseDateText + date),
               CustomTextWidget(
-                  text: popularityText + movie.voteAverage.toStringAsFixed(1)),
+                text: releaseDateText + date,
+              ),
               CustomTextWidget(
-                  text: totalVoteText + movie.voteCount.toString()),
+                text: popularityText + movie.voteAverage.toStringAsFixed(1),
+              ),
+              CustomTextWidget(
+                text: totalVoteText + movie.voteCount.toString(),
+              ),
               const Divider(),
               CustomTextWidget(
                 text: movie.overview,

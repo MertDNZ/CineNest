@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 class GetDiscoveryResults {
   final MovieRepository repository;
 
-  GetDiscoveryResults.getDiscoveryResults({required this.repository});
+  GetDiscoveryResults({required this.repository});
 
   Future<Either<Failure, DiscoveryEntity>> call(
       {required int genreId, int? page}) {

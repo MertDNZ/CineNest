@@ -70,4 +70,21 @@ class MovieRepositoryImpl implements MovieRepository {
       return Left(NetworkFailure(errorMessage: 'No internet connection'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<MovieEntity>>> getSearchedMovies(
+      {required String query}) async {
+    if (await connectionInfo.isConnected!) {
+      try {
+        final movies = await remoteDataSource.getSearchedMovies(query: query);
+        return Right(movies);
+      } on ServerException {
+        return Left(ServerFailure(errorMessage: 'Server Exception'));
+      } catch (_) {
+        return Left(ServerFailure(errorMessage: 'Something Went Wrong'));
+      }
+    } else {
+      return Left(NetworkFailure(errorMessage: 'No internet connection'));
+    }
+  }
 }
