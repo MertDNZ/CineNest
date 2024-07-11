@@ -1,11 +1,12 @@
 import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
-import 'package:cine_nest/presentation/screens/movie_detail/widgets/custom_text_widget.dart';
+import 'package:cine_nest/presentation/screens/movie_details/widgets/cast_list_widget.dart';
+import 'package:cine_nest/presentation/screens/movie_details/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class MovieDetailPage extends StatelessWidget {
-  const MovieDetailPage({super.key, required this.movie, required this.image});
+class MovieDetailsPage extends StatelessWidget {
+  const MovieDetailsPage({super.key, required this.movie, required this.image});
   final MovieEntity movie;
   final Widget image;
   @override
@@ -18,6 +19,7 @@ class MovieDetailPage extends StatelessWidget {
         title: const Text("Movie Details"),
       ),
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -50,6 +52,14 @@ class MovieDetailPage extends StatelessWidget {
                 text: movie.overview,
                 fontSize: 20,
                 padding: 8,
+              ),
+              const Divider(height: 50),
+              SizedBox(
+                width: double.infinity,
+                height: 500,
+                child: CastListWidget(
+                  movieId: movie.id,
+                ),
               )
             ],
           ),

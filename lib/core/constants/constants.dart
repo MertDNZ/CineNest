@@ -10,12 +10,11 @@ const String topRatedMoviesEndpoint = "/3/movie/top_rated";
 const String genresEndpoint = "/3/genre/movie/list";
 const String discoverEndpoint = "/3/discover/movie";
 const String searchEndpoint = "/3/search/movie";
-
+const String movieEndpoint = "/3/movie/";
 //default parameters
 const Map<String, dynamic> queryParameters = {
   'api_key': apiKey,
   'adult': 'false',
-  'sort_by': 'popularity.desc',
 };
 
 //Texts

@@ -3,7 +3,7 @@ import 'package:cine_nest/domain/entities/genre_entity.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/main.dart';
 import 'package:cine_nest/presentation/screens/filtered_screen/page/filtered_movies_page.dart';
-import 'package:cine_nest/presentation/screens/movie_detail/page/movie_detail_page.dart';
+import 'package:cine_nest/presentation/screens/movie_details/page/movie_details_page.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -16,7 +16,7 @@ class RouteGenerator {
         final movie = args["movie"] as MovieEntity;
         final image = args["image"] as Widget;
         return MaterialPageRoute(
-            builder: (_) => MovieDetailPage(
+            builder: (_) => MovieDetailsPage(
                   movie: movie,
                   image: image,
                 ));

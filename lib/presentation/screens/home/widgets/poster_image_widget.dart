@@ -10,16 +10,7 @@ class PosterNetworkImageWidget extends StatelessWidget {
   static void _defaultOnError() {}
   @override
   Widget build(BuildContext context) {
-    // return posterPath == "null"
-    //     ? _default()
-    //     : Image.network(posterUrl + posterPath, fit: BoxFit.cover,
-    //         errorBuilder: (context, error, stackTrace) {
-    //         WidgetsBinding.instance.addPostFrameCallback((_) {
-    //           onError();
-    //         });
-    //         return _default();
-    //       });
-    return posterPath == "null"
+    return posterPath == "null" || posterPath.isEmpty
         ? _default()
         : CachedNetworkImage(
             imageUrl: posterUrl + posterPath,
@@ -51,7 +42,8 @@ class PosterNetworkImageWidget extends StatelessWidget {
 
   Container _default() {
     return Container(
-      color: Colors.grey,
+      height: 300,
+      color: Colors.black54,
       child: const Center(
         child: Icon(
           Icons.movie,
