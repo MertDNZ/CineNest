@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cine_nest/core/connection/connection_info.dart';
 import 'package:cine_nest/core/errors/failure.dart';
 import 'package:cine_nest/data/repositories/movie_repository_impl.dart';
@@ -9,12 +7,13 @@ import 'package:cine_nest/domain/usecases/get_casts.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class MovieDetailsProvider extends ChangeNotifier {
+class CastProvider extends ChangeNotifier {
   List<CastEntity>? casts;
   Failure? failure;
   bool? isLoading;
+  String? videoUrl;
 
-  MovieDetailsProvider({
+  CastProvider({
     this.casts,
     this.failure,
     this.isLoading,
@@ -28,7 +27,6 @@ class MovieDetailsProvider extends ChangeNotifier {
 
   void getCasts({required int movieId}) async {
     isLoading = true;
-    // log(movieId.toString());
     final getCastsOrFailure =
         await GetCasts(repository: repository).call(movieId: movieId);
 

@@ -2,6 +2,7 @@
 const String baseUrl = "api.themoviedb.org";
 const String apiKey = "31e1b4a67ee5b8aa3707babafcb8d1e6";
 const String posterUrl = "https://image.tmdb.org/t/p/w500";
+const String baseYoutubeUrl = "www.youtube.com/watch?v=";
 
 //Endpoints
 const String trendingMoviesEndpoint = "/3/trending/movie/week";
@@ -25,6 +26,7 @@ const String popularityText = "Popularity: ";
 const String totalVoteText = "Total Vote: ";
 const String releaseDateText = "Release Date: ";
 const String voteAverageText = "Average Vote: ";
+const String noVideosText = "No videos found";
 
 //Appbar texts
 const String discoverText = "Discover Movies";

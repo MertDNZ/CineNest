@@ -8,6 +8,7 @@ import 'package:cine_nest/domain/entities/cast_entity.dart';
 import 'package:cine_nest/domain/entities/discovery_entity.dart';
 import 'package:cine_nest/domain/entities/genre_entity.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
+import 'package:cine_nest/domain/entities/video_entity.dart';
 import 'package:cine_nest/domain/repositories/movie_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -100,6 +101,23 @@ class MovieRepositoryImpl implements MovieRepository {
         return Left(ServerFailure(errorMessage: "Server Exception"));
       } catch (_) {
         return Left(ServerFailure(errorMessage: "Something went wrong"));
+      }
+    } else {
+      return Left(NetworkFailure(errorMessage: 'No internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<VideoEntity>>> getVideos(
+      {required int movieId}) async {
+    if (await connectionInfo.isConnected!) {
+      try {
+        final videos = await remoteDataSource.getVideos(movieId: movieId);
+        return Right(videos);
+      } on ServerException {
+        return Left(ServerFailure(errorMessage: "Server Exception"));
+      } catch (_) {
+        return Left(ServerFailure(errorMessage: 'Something Went Wrong'));
       }
     } else {
       return Left(NetworkFailure(errorMessage: 'No internet connection'));

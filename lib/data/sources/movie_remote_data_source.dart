@@ -6,6 +6,7 @@ import 'package:cine_nest/core/errors/exceptions.dart';
 import 'package:cine_nest/data/models/cast_model.dart';
 import 'package:cine_nest/data/models/discovery_model.dart';
 import 'package:cine_nest/data/models/genre_model.dart';
+import 'package:cine_nest/data/models/video_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:cine_nest/data/models/movie_model.dart';
 
@@ -18,6 +19,7 @@ abstract class MovieRemoteDataSource {
   });
   Future<List<MovieModel>> getSearchedMovies({required String query});
   Future<List<CastModel>> getCasts({required int movieId});
+  Future<List<VideoModel>> getVideos({required int movieId});
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -120,6 +122,22 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
     if (response.statusCode == 200) {
       final data = json.decode(response.body)["cast"] as List;
       return data.map((e) => CastModel.fromJson(e)).toList();
+    } else {
+      log('Request failed with status: ${response.statusCode}.');
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<VideoModel>> getVideos({required int movieId}) async {
+    final String videoEndpoint = '$movieId/videos';
+    final Uri url =
+        Uri.https(baseUrl, movieEndpoint + videoEndpoint, queryParameters);
+    final response = await http.get(url);
+    log('video status: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)["results"] as List;
+      return data.map((e) => VideoModel.fromJson(e)).toList();
     } else {
       log('Request failed with status: ${response.statusCode}.');
       throw ServerException();

@@ -1,5 +1,5 @@
 import 'package:cine_nest/presentation/screens/home/widgets/poster_image_widget.dart';
-import 'package:cine_nest/presentation/screens/movie_details/provider/movie_details_provider.dart';
+import 'package:cine_nest/presentation/screens/movie_details/provider/cast_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,13 +15,13 @@ class _CastListWidgetState extends State<CastListWidget> {
   @override
   void initState() {
     super.initState();
-    Provider.of<MovieDetailsProvider>(context, listen: false)
+    Provider.of<CastProvider>(context, listen: false)
         .getCasts(movieId: widget.movieId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MovieDetailsProvider>(context);
+    final provider = Provider.of<CastProvider>(context);
     final casts = provider.casts;
     final isLoading = provider.isLoading;
     final failure = provider.failure;
@@ -56,7 +56,10 @@ class _CastListWidgetState extends State<CastListWidget> {
                         const SizedBox(height: 20),
                         Text(cast.name!),
                         const SizedBox(height: 5),
-                        Text("(${cast.character!})"),
+                        Text(
+                          "(${cast.character!})",
+                          textAlign: TextAlign.center,
+                        ),
                         const SizedBox(height: 5),
                         Text(cast.knownForDepartment!),
                       ],

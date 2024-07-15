@@ -2,6 +2,7 @@ import 'package:cine_nest/core/constants/constants.dart';
 import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/presentation/screens/movie_details/widgets/cast_list_widget.dart';
 import 'package:cine_nest/presentation/screens/movie_details/widgets/custom_text_widget.dart';
+import 'package:cine_nest/presentation/screens/movie_details/widgets/video_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,6 +10,7 @@ class MovieDetailsPage extends StatelessWidget {
   const MovieDetailsPage({super.key, required this.movie, required this.image});
   final MovieEntity movie;
   final Widget image;
+
   @override
   Widget build(BuildContext context) {
     final parseDate = DateFormat('yyyy-MM-dd').parse(movie.releaseDate);
@@ -52,6 +54,14 @@ class MovieDetailsPage extends StatelessWidget {
                 text: movie.overview,
                 fontSize: 20,
                 padding: 8,
+              ),
+              const Divider(height: 50),
+              SizedBox(
+                width: double.infinity,
+                height: 200,
+                child: VideoListWidget(
+                  movieId: movie.id,
+                ),
               ),
               const Divider(height: 50),
               SizedBox(

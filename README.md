@@ -1,4 +1,4 @@
-# cine_nest
+# Cine Nest
 
 A new Flutter project.
 

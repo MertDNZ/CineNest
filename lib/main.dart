@@ -3,7 +3,8 @@ import 'package:cine_nest/config/routes/route_constants.dart';
 import 'package:cine_nest/config/routes/route_generator.dart';
 import 'package:cine_nest/presentation/screens/discover/providers/discover_page_provider.dart';
 import 'package:cine_nest/presentation/screens/filtered_screen/provider/filtered_movies_provider.dart';
-import 'package:cine_nest/presentation/screens/movie_details/provider/movie_details_provider.dart';
+import 'package:cine_nest/presentation/screens/movie_details/provider/cast_provider.dart';
+import 'package:cine_nest/presentation/screens/movie_details/provider/video_provider.dart';
 import 'package:cine_nest/presentation/screens/skeleton.dart';
 import 'package:cine_nest/presentation/screens/home/providers/home_page_provider.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HomePageProvider()),
         ChangeNotifierProvider(create: (context) => DiscoverPageProvider()),
         ChangeNotifierProvider(create: (context) => FilteredMoviesProvider()),
-        ChangeNotifierProvider(create: (context) => MovieDetailsProvider())
+        ChangeNotifierProvider(create: (context) => CastProvider()),
+        ChangeNotifierProvider(create: (context) => VideoProvider()),
       ],
       child: MaterialApp(
         theme: theme,

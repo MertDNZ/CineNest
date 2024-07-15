@@ -4,6 +4,7 @@ import 'package:cine_nest/domain/entities/movie_entity.dart';
 import 'package:cine_nest/main.dart';
 import 'package:cine_nest/presentation/screens/filtered_screen/page/filtered_movies_page.dart';
 import 'package:cine_nest/presentation/screens/movie_details/page/movie_details_page.dart';
+import 'package:cine_nest/presentation/screens/video_screen/page/video_page.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -26,6 +27,13 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => FilteredMoviesPage(
                   genre: genre,
+                ));
+      case videoPage:
+        final args = settings.arguments as Map<String, dynamic>;
+        final videoKey = args["videoKey"] as String;
+        return MaterialPageRoute(
+            builder: (_) => VideoPage(
+                  videoKey: videoKey,
                 ));
       default:
         return _errorRoute();
