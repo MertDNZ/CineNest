@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -69,7 +67,7 @@ class _VideoPageState extends State<VideoPage> {
               height: 50,
             ),
             Text(
-              _controller.metadata.title,
+              _videoMetaData.title,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
