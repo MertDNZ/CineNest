@@ -63,6 +63,7 @@ class ThumbnailWidget extends StatelessWidget {
   Container _default() {
     return Container(
       height: 300,
+      width: 250,
       color: Colors.black54,
       child: const Center(
         child: Icon(

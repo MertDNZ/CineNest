@@ -21,7 +21,7 @@ class _VideoPageState extends State<VideoPage> {
         flags: const YoutubePlayerFlags(
           mute: false,
           loop: false,
-          autoPlay: false,
+          autoPlay: true,
         ))
       ..addListener(listener);
     _videoMetaData = const YoutubeMetaData();
