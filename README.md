@@ -16,8 +16,8 @@ On this screen you can see:
 <div style="height: 10px;"></div>
 
 <div align="center">
-  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/main_screen_1.gif" alt="main_screen_gif_1" />
-  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/detail_screen.gif" alt="detail_screen_gif" />
+  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/main_screen_1.gif" width=300 heihgt=300> 
+  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/detail_screen.gif" width=300 heihgt=300>
 </div>
 
 <div style="height: 10px;"></div>
@@ -27,7 +27,7 @@ On this screen you can see:
 You can list movies by genre and you can search movies by pressing search icon on the top right of the screen.
 
 <div align="center">
-  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/discover_screen.gif" alt="discover_screen_gif" />
+  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/discover_screen.gif" width=300 heihgt=300>
 </div>
 
 <div style="height: 10px;"></div>
@@ -45,7 +45,7 @@ You can search movies by keywords and directed to detail screen.
 <div style="height: 10px;"></div>
 
 <div align="center">
-  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/search_detail_screen.gif" alt="search_detail_screen_gif" />
+  <img src="https://github.com/MertDNZ/CineNest/blob/main/ss/search_detail_screen.gif" width=300 heihgt=300>
 </div>
 
 <div style="height: 10px;"></div>
